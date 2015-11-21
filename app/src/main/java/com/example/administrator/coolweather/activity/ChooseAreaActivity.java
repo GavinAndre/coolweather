@@ -70,11 +70,20 @@ public class ChooseAreaActivity extends AppCompatActivity {
      */
     private int currentLevel;
 
+    /**
+     * 是否从WeatherActivity中跳转过来
+     */
+    private boolean isFromWeatherActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("city_selected", false)) {
+        isFromWeatherActivity = getIntent().getBooleanExtra(
+                "from_weather_activity", false);
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        //已经选择了城市且不是从WeatherActivity中跳转过来，才会直接跳转到WeatherActivity
+        if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
             Intent intent = new Intent(this, WeatherActivity.class);
             startActivity(intent);
             finish();
@@ -95,8 +104,8 @@ public class ChooseAreaActivity extends AppCompatActivity {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(index);
                     queryCounties();
-                }else if (currentLevel == LEVEL_COUNTY) {
-                    String countyCode=countyList.get(index).getCountyCode();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String countyCode = countyList.get(index).getCountyCode();
                     Intent intent = new Intent(ChooseAreaActivity.this,
                             WeatherActivity.class);
                     intent.putExtra("county_code", countyCode);
@@ -190,7 +199,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
                     result = Utility.handleCountiesResponse(coolWeatherDB, response,
                             selectedCity.getId());
                 }
-                Log.d("response", "------------------"+result);
+                Log.d("response", "------------------" + result);
                 if (result) {
                     //通过runOnUiThread()方法回到主线程处理逻辑
                     runOnUiThread(new Runnable() {
@@ -206,7 +215,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
                             }
                         }
                     });
-                }else throw new NullPointerException();
+                } else throw new NullPointerException();
             }
 
             @Override
@@ -255,6 +264,10 @@ public class ChooseAreaActivity extends AppCompatActivity {
         } else if (currentLevel == LEVEL_CITY) {
             queryProvinces();
         } else {
+            if (isFromWeatherActivity) {
+                Intent intent = new Intent(this, WeatherActivity.class);
+                startActivity(intent);
+            }
             finish();
         }
     }
