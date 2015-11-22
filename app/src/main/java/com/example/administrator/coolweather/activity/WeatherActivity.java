@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -123,8 +124,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
      * 查询天气代号所对应的天气
      */
     private void queryWeatherInfo(String weatherCode) {
-        String address = "http://www.weather.com.cn/data/cityinfo/" +
-                weatherCode + ".html";
+        String address = "http://apis.baidu.com/apistore/weatherservice/cityid" +
+                "?cityid="+weatherCode + ".html";
         queryFromServer(address, "weatherCode");
     }
 
@@ -145,6 +146,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 } else if ("weatherCode".equals(type)) {
+                    Log.d("response", response);
                     //处理服务器返回的天气信息
                     Utility.handleWeatherResponse(WeatherActivity.this,
                             response);
