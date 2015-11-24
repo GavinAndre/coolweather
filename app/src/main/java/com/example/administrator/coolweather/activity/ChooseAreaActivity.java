@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -69,11 +70,15 @@ public class ChooseAreaActivity extends AppCompatActivity {
      * 当前选中的级别
      */
     private int currentLevel;
-
     /**
      * 是否从WeatherActivity中跳转过来
      */
     private boolean isFromWeatherActivity;
+
+    /**
+     * Toolbar
+     */
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +95,11 @@ public class ChooseAreaActivity extends AppCompatActivity {
             return;
         }
         setContentView(R.layout.choose_area);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar1);
+
         listView = (ListView) findViewById(R.id.list_view);
-        titleText = (TextView) findViewById(R.id.title_text);
+//        titleText = (TextView) findViewById(R.id.title_text);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         coolWeatherDB = CoolWeatherDB.getInstance(this);
@@ -129,7 +137,9 @@ public class ChooseAreaActivity extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            titleText.setText("中国");
+            //titleText.setText("中国");
+            toolbar.setTitle("中国");
+            setSupportActionBar(toolbar);
             currentLevel = LEVEL_PROVINCE;
         } else {
             queryFromServer(null, "province");
@@ -148,7 +158,9 @@ public class ChooseAreaActivity extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            titleText.setText(selectedProvince.getProvinceName());
+//            titleText.setText(selectedProvince.getProvinceName());
+            toolbar.setTitle(selectedProvince.getProvinceName());
+            setSupportActionBar(toolbar);
             currentLevel = LEVEL_CITY;
         } else {
             queryFromServer(selectedProvince.getProvinceCode(), "city");
@@ -167,7 +179,9 @@ public class ChooseAreaActivity extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            titleText.setText(selectedCity.getCityName());
+//            titleText.setText(selectedCity.getCityName());
+            toolbar.setTitle(selectedCity.getCityName());
+            setSupportActionBar(toolbar);
             currentLevel = LEVEL_COUNTY;
         } else {
             queryFromServer(selectedCity.getCityCode(), "county");
