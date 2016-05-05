@@ -202,7 +202,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-                Log.d("response", response);
+                Log.i("Choose_response", response);
                 boolean result = false;
                 if ("province".equals(type)) {
                     result = Utility.handleProvincesResponse(coolWeatherDB, response);
@@ -213,7 +213,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
                     result = Utility.handleCountiesResponse(coolWeatherDB, response,
                             selectedCity.getId());
                 }
-                Log.d("response", "------------------" + result);
+                Log.i("result", "------------------" + result);
                 if (result) {
                     //通过runOnUiThread()方法回到主线程处理逻辑
                     runOnUiThread(new Runnable() {

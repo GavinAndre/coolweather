@@ -110,7 +110,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
-
     }
 
     @Override
@@ -193,7 +192,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 } else if ("weatherCode".equals(type)) {
-                    Log.d("response", response);
+                    Log.i("Weather_response", response);
                     //处理服务器返回的天气信息
                     Utility.handleWeatherResponse(WeatherActivity.this,
                             response);
@@ -222,7 +221,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * 从SharedPreferences文件中读取存储的太暖气信息,并显示到界面上
+     * 从SharedPreferences文件中读取存储的天气信息,并显示到界面上
      */
     private void showWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
